@@ -1,5 +1,5 @@
 //
-//  SCLViewController.h
+//  SCLRecordingViewController.h
 //  VoiceRecorder
 //
 //  Created by Scott Lessans on 4/12/14.
