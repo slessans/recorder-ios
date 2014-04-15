@@ -23,4 +23,6 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *playPauseButton;
 
+@property (weak, nonatomic) IBOutlet UISegmentedControl * audioOutputControl;
+
 @end

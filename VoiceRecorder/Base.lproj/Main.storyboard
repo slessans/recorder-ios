@@ -269,6 +269,17 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" translatesAutoresizingMaskIntoConstraints="NO" id="gFr-43-22b">
+                                <rect key="frame" x="20" y="345" width="280" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="28" id="4XU-rO-htT"/>
+                                </constraints>
+                                <segments>
+                                    <segment title="Phone"/>
+                                    <segment title="Speaker"/>
+                                </segments>
+                            </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -276,6 +287,8 @@
                             <constraint firstItem="4XI-2E-aja" firstAttribute="leading" secondItem="RMe-g0-7Ev" secondAttribute="leading" constant="20" id="7oq-5G-xDl"/>
                             <constraint firstItem="51R-H2-KRe" firstAttribute="leading" secondItem="RMe-g0-7Ev" secondAttribute="leading" constant="20" id="E25-1O-AAr"/>
                             <constraint firstAttribute="trailing" secondItem="S00-UZ-W5S" secondAttribute="trailing" constant="20" id="GFu-gX-doX"/>
+                            <constraint firstAttribute="trailing" secondItem="gFr-43-22b" secondAttribute="trailing" constant="20" id="PN4-4C-cgY"/>
+                            <constraint firstItem="gFr-43-22b" firstAttribute="top" secondItem="S00-UZ-W5S" secondAttribute="bottom" constant="8" id="Qbv-h8-687"/>
                             <constraint firstAttribute="trailing" secondItem="LFW-V6-mb9" secondAttribute="trailing" constant="20" id="Quy-aU-kCs"/>
                             <constraint firstItem="vbz-rB-19Z" firstAttribute="leading" secondItem="RMe-g0-7Ev" secondAttribute="leading" constant="20" id="R5k-HI-S0U"/>
                             <constraint firstItem="WXx-09-EE7" firstAttribute="top" secondItem="F04-Jr-OQj" secondAttribute="bottom" constant="8" id="Rh5-Gr-ekp"/>
@@ -288,6 +301,7 @@
                             <constraint firstItem="F04-Jr-OQj" firstAttribute="leading" secondItem="RMe-g0-7Ev" secondAttribute="leading" constant="20" id="cyq-KB-ZIH"/>
                             <constraint firstAttribute="trailing" secondItem="vbz-rB-19Z" secondAttribute="trailing" constant="20" id="dhb-oj-euT"/>
                             <constraint firstItem="wWX-fY-mNI" firstAttribute="top" secondItem="4XI-2E-aja" secondAttribute="bottom" constant="20" id="eCQ-zI-BmO"/>
+                            <constraint firstItem="gFr-43-22b" firstAttribute="leading" secondItem="RMe-g0-7Ev" secondAttribute="leading" constant="20" id="eXO-Mn-zJD"/>
                             <constraint firstItem="XDg-2z-juV" firstAttribute="leading" secondItem="RMe-g0-7Ev" secondAttribute="leading" constant="20" id="fXC-r2-Igl"/>
                             <constraint firstItem="51R-H2-KRe" firstAttribute="top" secondItem="ZNa-gP-WNX" secondAttribute="bottom" constant="19" id="jpg-rW-c4Q"/>
                             <constraint firstItem="4XI-2E-aja" firstAttribute="top" secondItem="LFW-V6-mb9" secondAttribute="bottom" constant="8" id="oA0-T3-SOT"/>
@@ -301,6 +315,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Playback" id="bJO-86-ZCy"/>
                     <connections>
+                        <outlet property="audioOutputControl" destination="gFr-43-22b" id="BW4-2V-8G7"/>
                         <outlet property="averagePowerProgressView" destination="4XI-2E-aja" id="abc-CZ-PMc"/>
                         <outlet property="currentTimeLabel" destination="F04-Jr-OQj" id="jGo-yD-7ZK"/>
                         <outlet property="fileNameLabel" destination="51R-H2-KRe" id="xbS-Qu-9YI"/>

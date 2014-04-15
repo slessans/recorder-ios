@@ -12,6 +12,7 @@
     BOOL _isUserSliding;
 }
 
+@property (nonatomic) BOOL speaker;
 @property (nonatomic, strong) AVAudioPlayer * player;
 @property (nonatomic, strong) NSTimer * updateTimer;
 
@@ -23,6 +24,8 @@
 
 - (void) sliderDidBeginSliding:(id)sender;
 - (void) sliderDidEndSliding:(id)sender;
+
+- (void) audioOutputControlValueDidChange:(id)sender;
 
 @end
 
@@ -46,10 +49,24 @@
     _isUserSliding = NO;
 }
 
+- (void) audioOutputControlValueDidChange:(id)sender
+{
+    self.speaker = (self.audioOutputControl.selectedSegmentIndex == 1);
+    
+    if (self.player) {
+        AVAudioSession * audioSession = [AVAudioSession sharedInstance];
+        AVAudioSessionPortOverride override = self.speaker ?
+        AVAudioSessionPortOverrideSpeaker : AVAudioSessionPortOverrideNone;
+        [audioSession overrideOutputAudioPort:override error:nil];
+    }
+    
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
+    self.speaker = NO;
     _isUserSliding = NO;
     
     [self.playPauseButton addTarget:self
@@ -58,6 +75,10 @@
     
     self.timeSlider.minimumValue = 0.0;
     self.timeSlider.maximumValue = 1.0;
+    
+    [self.audioOutputControl addTarget:self
+                                action:@selector(audioOutputControlValueDidChange:)
+                      forControlEvents:UIControlEventValueChanged];
     
     [self.timeSlider addTarget:self
                         action:@selector(sliderDidBeginSliding:)
@@ -116,6 +137,12 @@
         self.playPauseButton.hidden = YES;
     }
     
+    if (self.speaker) {
+        self.audioOutputControl.selectedSegmentIndex = 1;
+    } else {
+        self.audioOutputControl.selectedSegmentIndex = 0;
+    }
+    
     [self updateAudioGUI];
 }
 
@@ -172,6 +199,10 @@
             AVAudioSession * audioSession = [AVAudioSession sharedInstance];
             [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
             [audioSession setActive:YES error:nil];
+            
+            AVAudioSessionPortOverride override = self.speaker ?
+                AVAudioSessionPortOverrideSpeaker : AVAudioSessionPortOverrideNone;
+            [audioSession overrideOutputAudioPort:override error:nil];
             
             self.player.delegate = self;
             self.player.meteringEnabled = YES;
