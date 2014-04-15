@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		980FEC6218FCAA4200DD593B /* SCLPlaybackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 980FEC6118FCAA4200DD593B /* SCLPlaybackViewController.m */; };
 		983CFAF818F9A1F600612302 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 983CFAF718F9A1F600612302 /* Foundation.framework */; };
 		983CFAFA18F9A1F600612302 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 983CFAF918F9A1F600612302 /* CoreGraphics.framework */; };
 		983CFAFC18F9A1F600612302 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 983CFAFB18F9A1F600612302 /* UIKit.framework */; };
@@ -14,7 +15,7 @@
 		983CFB0418F9A1F600612302 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 983CFB0318F9A1F600612302 /* main.m */; };
 		983CFB0818F9A1F600612302 /* SCLAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 983CFB0718F9A1F600612302 /* SCLAppDelegate.m */; };
 		983CFB0B18F9A1F600612302 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 983CFB0918F9A1F600612302 /* Main.storyboard */; };
-		983CFB0E18F9A1F600612302 /* SCLViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 983CFB0D18F9A1F600612302 /* SCLViewController.m */; };
+		983CFB0E18F9A1F600612302 /* SCLRecordingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 983CFB0D18F9A1F600612302 /* SCLRecordingViewController.m */; };
 		983CFB1018F9A1F600612302 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 983CFB0F18F9A1F600612302 /* Images.xcassets */; };
 		983CFB1718F9A1F600612302 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 983CFB1618F9A1F600612302 /* XCTest.framework */; };
 		983CFB1818F9A1F600612302 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 983CFAF718F9A1F600612302 /* Foundation.framework */; };
@@ -35,6 +36,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		980FEC6018FCAA4200DD593B /* SCLPlaybackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCLPlaybackViewController.h; sourceTree = "<group>"; };
+		980FEC6118FCAA4200DD593B /* SCLPlaybackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCLPlaybackViewController.m; sourceTree = "<group>"; };
 		983CFAF418F9A1F600612302 /* VoiceRecorder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VoiceRecorder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		983CFAF718F9A1F600612302 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		983CFAF918F9A1F600612302 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -46,8 +49,8 @@
 		983CFB0618F9A1F600612302 /* SCLAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCLAppDelegate.h; sourceTree = "<group>"; };
 		983CFB0718F9A1F600612302 /* SCLAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCLAppDelegate.m; sourceTree = "<group>"; };
 		983CFB0A18F9A1F600612302 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		983CFB0C18F9A1F600612302 /* SCLViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCLViewController.h; sourceTree = "<group>"; };
-		983CFB0D18F9A1F600612302 /* SCLViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCLViewController.m; sourceTree = "<group>"; };
+		983CFB0C18F9A1F600612302 /* SCLRecordingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCLRecordingViewController.h; sourceTree = "<group>"; };
+		983CFB0D18F9A1F600612302 /* SCLRecordingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCLRecordingViewController.m; sourceTree = "<group>"; };
 		983CFB0F18F9A1F600612302 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		983CFB1518F9A1F600612302 /* VoiceRecorderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VoiceRecorderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		983CFB1618F9A1F600612302 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -118,12 +121,14 @@
 				983CFB0618F9A1F600612302 /* SCLAppDelegate.h */,
 				983CFB0718F9A1F600612302 /* SCLAppDelegate.m */,
 				983CFB0918F9A1F600612302 /* Main.storyboard */,
-				983CFB0C18F9A1F600612302 /* SCLViewController.h */,
-				983CFB0D18F9A1F600612302 /* SCLViewController.m */,
+				983CFB0C18F9A1F600612302 /* SCLRecordingViewController.h */,
+				983CFB0D18F9A1F600612302 /* SCLRecordingViewController.m */,
 				983CFB0F18F9A1F600612302 /* Images.xcassets */,
 				983CFAFE18F9A1F600612302 /* Supporting Files */,
 				9847FC0918F9C2620040EEF0 /* SCLRecordingsTableViewController.h */,
 				9847FC0A18F9C2620040EEF0 /* SCLRecordingsTableViewController.m */,
+				980FEC6018FCAA4200DD593B /* SCLPlaybackViewController.h */,
+				980FEC6118FCAA4200DD593B /* SCLPlaybackViewController.m */,
 			);
 			path = VoiceRecorder;
 			sourceTree = "<group>";
@@ -255,7 +260,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				983CFB0E18F9A1F600612302 /* SCLViewController.m in Sources */,
+				980FEC6218FCAA4200DD593B /* SCLPlaybackViewController.m in Sources */,
+				983CFB0E18F9A1F600612302 /* SCLRecordingViewController.m in Sources */,
 				983CFB0418F9A1F600612302 /* main.m in Sources */,
 				9847FC0B18F9C2620040EEF0 /* SCLRecordingsTableViewController.m in Sources */,
 				983CFB0818F9A1F600612302 /* SCLAppDelegate.m in Sources */,

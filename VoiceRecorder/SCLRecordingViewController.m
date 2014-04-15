@@ -6,11 +6,11 @@
 //  Copyright (c) 2014 Scott Lessans. All rights reserved.
 //
 
-#import "SCLViewController.h"
+#import "SCLRecordingViewController.h"
 
 static NSString * const FileExt = @"aif";
 
-@interface SCLViewController ()
+@interface SCLRecordingViewController ()
 
 @property (nonatomic, strong) AVAudioRecorder * recorder;
 @property (nonatomic, strong) NSTimer * updateTimer;
@@ -22,13 +22,20 @@ static NSString * const FileExt = @"aif";
 - (void) saveRecordingButtonAction:(id)sender;
 
 - (void) allRecordingsAction:(id)sender;
+- (void) cancelRecordingAction:(id)sender;
 
 - (void) beginRecording;
 - (void) pauseRecording;
 
 @end
 
-@implementation SCLViewController
+@implementation SCLRecordingViewController
+
+- (void) viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self pauseRecording];
+}
 
 - (void)viewDidLoad
 {
@@ -45,6 +52,10 @@ static NSString * const FileExt = @"aif";
     [self.allRecordingsButton addTarget:self
                                  action:@selector(allRecordingsAction:)
                        forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.cancelRecordingButton addTarget:self
+                                   action:@selector(cancelRecordingAction:)
+                         forControlEvents:UIControlEventTouchUpInside];
     
     [self updateGUI];
 }
@@ -71,8 +82,74 @@ static NSString * const FileExt = @"aif";
     if (self.recorder.isRecording) {
         [self.recorder pause];
     }
+    NSURL * tmpFileURL = self.recorder.url;
     [self.recorder stop];
     self.recorder = nil;
+    
+    NSFileManager * fileManager = [NSFileManager defaultManager];
+    
+    NSError * error = nil;
+    if (![fileManager moveItemAtURL:tmpFileURL
+                              toURL:generateFinishedFileURL()
+                              error:&error])
+    {
+        NSLog(@"Error saving file: %@", error);
+        
+        // this wouldn't be suitable for a production app, but I want to know if this happens.
+        NSString * message = [NSString stringWithFormat:
+                              @"An error occurred while saving your file: %@",
+                              [error localizedDescription]];
+        [[[UIAlertView alloc] initWithTitle:@"Weird."
+                                    message:message
+                                   delegate:nil
+                          cancelButtonTitle:@"Ok"
+                          otherButtonTitles:nil] show];
+    }
+    [self updateGUI];
+}
+
+- (void) cancelRecordingAction:(id)sender
+{
+    if (!self.recorder) {
+        return;
+    }
+    [self pauseRecording];
+    
+    NSString * message = @"Are you sure you want to cancel this recording? All audio will be lost.";
+    [[[UIAlertView alloc] initWithTitle:@"Are you sure?"
+                               message:message
+                              delegate:self
+                     cancelButtonTitle:@"Nevermind"
+                      otherButtonTitles:@"Cancel!", nil] show];    
+}
+
+- (void) alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == alertView.cancelButtonIndex) {
+        return;
+    }
+    
+    // for now, this could only be triggered by cancel alert. if it wasn't
+    // the cancel button, then it must be the Cancel! button (hehe)
+    NSURL * tmpFileUrl = self.recorder.url;
+    [self.recorder stop];
+    self.recorder = nil;
+    
+    NSFileManager * fileManager = [NSFileManager defaultManager];
+    NSError * error = nil;
+    if (![fileManager removeItemAtURL:tmpFileUrl error:&error]) {
+        // this wouldn't be suitable for a production app, but I want to know if this happens.
+        NSString * message = [NSString stringWithFormat:
+                              @"An error occurred while deleting your file: %@",
+                              [error localizedDescription]];
+        [[[UIAlertView alloc] initWithTitle:@"Weird."
+                                   message:message
+                                  delegate:nil
+                         cancelButtonTitle:@"Ok"
+                          otherButtonTitles:nil] show];
+        NSLog(@"Error deleting file: %@", error);
+    }
+    
     [self updateGUI];
 }
 
@@ -132,19 +209,25 @@ static NSString * const FileExt = @"aif";
             [self.recordingControlButton setTitle:@"Pause Recording"
                                          forState:UIControlStateNormal];
             self.statusLabel.text = @"Recording";
+            self.saveRecordingButton.hidden = YES;
+            self.cancelRecordingButton.hidden = YES;
         } else {
             self.statusLabel.text = @"Recording Paused";
             [self.recordingControlButton setTitle:@"Resume Recording"
                                          forState:UIControlStateNormal];
+            self.saveRecordingButton.hidden = NO;
+            self.cancelRecordingButton.hidden = NO;
         }
         self.fileNameLabel.text = self.recorder.url.path;
-        self.saveRecordingButton.hidden = NO;
+        self.allRecordingsButton.hidden = YES;
     } else {
         self.statusLabel.text = @"";
         [self.recordingControlButton setTitle:@"Begin Recording"
                                      forState:UIControlStateNormal];
         self.fileNameLabel.text = nil;
         self.saveRecordingButton.hidden = YES;
+        self.cancelRecordingButton.hidden = YES;
+        self.allRecordingsButton.hidden = NO;
     }
     
     [self updateAudioGUI];
@@ -178,7 +261,7 @@ static NSString * const FileExt = @"aif";
           };
         
         NSError * error = nil;
-        self.recorder = [[AVAudioRecorder alloc] initWithURL:generateFileURL()
+        self.recorder = [[AVAudioRecorder alloc] initWithURL:generateTemporaryFileURL()
                                                     settings:settings
                                                        error:&error];
         
@@ -194,6 +277,10 @@ static NSString * const FileExt = @"aif";
             return;
         }
         
+        AVAudioSession * audioSession = [AVAudioSession sharedInstance];
+        [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
+        [audioSession setActive:YES error:nil];
+        
         [self.recorder prepareToRecord];
     }
     [self.recorder record];
@@ -206,7 +293,14 @@ static NSString * const FileExt = @"aif";
     // Dispose of any resources that can be recreated.
 }
 
-NS_INLINE NSURL * generateFileURL()
+NS_INLINE NSURL * generateTemporaryFileURL()
+{
+    NSString * fileName = [NSString stringWithFormat:@"recording.%@",
+                           FileExt];
+    return [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:fileName]];
+}
+
+NS_INLINE NSURL * generateFinishedFileURL()
 {
     NSString * documentsDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     

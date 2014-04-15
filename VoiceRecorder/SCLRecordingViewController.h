@@ -9,11 +9,12 @@
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 
-@interface SCLViewController : UIViewController <AVAudioRecorderDelegate>
+@interface SCLRecordingViewController : UIViewController <AVAudioRecorderDelegate, UIAlertViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UIButton * recordingControlButton;
 @property (nonatomic, weak) IBOutlet UIButton * allRecordingsButton;
 @property (nonatomic, weak) IBOutlet UIButton * saveRecordingButton;
+@property (nonatomic, weak) IBOutlet UIButton * cancelRecordingButton;
 
 @property (nonatomic, weak) IBOutlet UILabel * statusLabel; // recording or not recording
 @property (nonatomic, weak) IBOutlet UILabel * timeLabel;

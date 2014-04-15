@@ -7,11 +7,13 @@
 //
 
 #import "SCLRecordingsTableViewController.h"
+#import "SCLPlaybackViewController.h"
 
 @interface SCLRecordingsTableViewController ()
 
 @property (nonatomic, strong) NSArray * recordings;
 @property (nonatomic, strong) NSIndexPath * indexPathOfDeleteCell;
+@property (nonatomic, strong) NSString * audioFileToPlay;
 
 - (void) refreshAction:(id)sender;
 
@@ -32,7 +34,7 @@
 {
     [super viewDidLoad];
     
-    self.tableView.allowsSelection = NO;
+    self.tableView.allowsSelection = YES;
     self.tableView.allowsMultipleSelection = NO;
     
     self.refreshButtonItem.target = self;
@@ -111,7 +113,23 @@
     [self refreshAction:self];
 }
 
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.destinationViewController isKindOfClass:[SCLPlaybackViewController class]]) {
+        SCLPlaybackViewController * v = segue.destinationViewController;
+        v.audioFilePath = self.audioFileToPlay;
+        self.audioFileToPlay = nil;
+    }
+}
+
 #pragma mark - Table view data source
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    self.audioFileToPlay = self.recordings[indexPath.row][@"filePath"];
+    [self performSegueWithIdentifier:@"PlaybackSegue"
+                              sender:self];
+}
+
 - (UITableViewCellEditingStyle) tableView:(UITableView*)tableView editingStyleForRowAtIndexPath:(NSIndexPath*)indexPath {
     return UITableViewCellEditingStyleDelete;
 }
